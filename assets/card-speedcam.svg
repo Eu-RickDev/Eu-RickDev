@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300" role="img" aria-label="RickDev Speedcam: Câmera com sensação de velocidade: FOV, zoom out, shake e blur crescendo com o km/h, e modo drift.">
+<title>RickDev Speedcam: Câmera com sensação de velocidade: FOV, zoom out, shake e blur crescendo com o km/h, e modo drift.</title>
+<defs>
+  <filter id="rough" x="-10%" y="-30%" width="120%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="roughS" x="-5%" y="-30%" width="110%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="1" seed="9" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="roughT" x="-5%" y="-10%" width="110%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="21" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="brushF" x="-3%" y="-120%" width="106%" height="340%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.03 0.12" numOctaves="2" seed="5" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="grain" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0.106  0 0 0 0 0.094  0 0 0 0 0.082  1.4 0 0 0 -0.62"/>
+  </filter>
+  <filter id="fibers" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.005 0.08" numOctaves="2" seed="2" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0.72  0 0 0 0 0.52  0 0 0 0 0.17  1.6 0 0 0 -0.85"/>
+  </filter>
+  <radialGradient id="vignette" cx="50%" cy="45%" r="75%">
+    <stop offset="55%" stop-color="#f3ebdd" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#ece0c9"/>
+  </radialGradient>
+  <clipPath id="frame"><rect width="600" height="300" rx="14"/></clipPath>
+</defs>
+<g clip-path="url(#frame)">
+  <rect width="600" height="300" fill="#f3ebdd"/>
+  <rect width="600" height="300" filter="url(#fibers)" opacity=".45"/>
+  <rect width="600" height="300" fill="url(#vignette)"/>
+  <text x="574" y="282" text-anchor="end" font-family="'Yu Mincho', 'Hiragino Mincho ProN', 'Noto Serif JP', 'Noto Serif CJK JP', 'MS Mincho', serif" font-size="250" fill="#1b1815" opacity=".06">速</text>
+  <rect x="10" y="10" width="580" height="280" rx="10" fill="none" stroke="#1b1815" stroke-opacity=".2" stroke-width="1.3" filter="url(#rough)"/>
+  <rect x="40" y="42" width="12" height="12" rx="2" fill="#8f3b34" transform="rotate(-6 46 48)"/>
+  <text x="62" y="53" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#4a423a">FIVEM · v1.1.0</text>
+  <g opacity="0.55" filter="url(#brushF)"><path d="M36,106.4 C48.5,96 104.9,94.1 186.4,95.7 C267.8,97 324.2,98.6 349.2,104 C317.9,106.9 261.5,110.4 180.1,111.7 C111.2,112.8 51.7,113.9 36,106.4 Z" fill="#d9a441"/><path d="M255.3,100.5 L355.5,101.6" stroke="#d9a441" stroke-width="1.4" stroke-linecap="round" opacity=".55"/><path d="M267.8,104.8 L349.2,104.2" stroke="#d9a441" stroke-width="1.4" stroke-linecap="round" opacity=".55"/><path d="M280.3,108.5 L343,106.4" stroke="#d9a441" stroke-width="1.4" stroke-linecap="round" opacity=".55"/></g>
+  <text x="40" y="112" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-weight="700" fill="#1b1815">RickDev Speedcam</text>
+  <text x="40" y="168" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#4a423a">Câmera com sensação de velocidade: FOV, zoom out,</text>
+  <text x="40" y="195" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#4a423a">shake e blur crescendo com o km/h, e modo drift.</text>
+  <rect x="40" y="226" width="51.7" height="30" rx="15" fill="#ece0c9" stroke="#b8842c" stroke-width="1.4"/><text x="65.8" y="246" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1815">Lua</text>
+  <rect x="101.7" y="226" width="51.7" height="30" rx="15" fill="#ece0c9" stroke="#b8842c" stroke-width="1.4"/><text x="127.6" y="246" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1815">NUI</text>
+  <rect x="163.4" y="226" width="122.8" height="30" rx="15" fill="#ece0c9" stroke="#b8842c" stroke-width="1.4"/><text x="224.8" y="246" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1815">Scripted Cam</text>
+  <text x="524" y="246" text-anchor="end" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5" fill="#4a423a">PRIVADO</text>
+  <g transform="translate(546 242)" fill="#4a423a">
+    <path d="M-6,-3 V-8 a6,6 0 0 1 12,0 V-3" fill="none" stroke="#4a423a" stroke-width="2.4"/>
+    <rect x="-9" y="-3" width="18" height="14" rx="3"/>
+    <circle cx="0" cy="3.5" r="2" fill="#f3ebdd"/>
+  </g>
+  <rect width="600" height="300" filter="url(#grain)" opacity=".55"/>
+</g>
+</svg>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 96" width="1200" height="96" role="img" aria-label="連絡 CONTATO">
+<title>連絡 CONTATO</title>
+<defs>
+  <filter id="rough" x="-10%" y="-30%" width="120%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="roughS" x="-5%" y="-30%" width="110%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="1" seed="9" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="roughT" x="-5%" y="-10%" width="110%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="21" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="brushF" x="-3%" y="-120%" width="106%" height="340%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.03 0.12" numOctaves="2" seed="5" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="grain" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0.106  0 0 0 0 0.094  0 0 0 0 0.082  1.4 0 0 0 -0.62"/>
+  </filter>
+  <filter id="fibers" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.005 0.08" numOctaves="2" seed="2" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 0.72  0 0 0 0 0.52  0 0 0 0 0.17  1.6 0 0 0 -0.85"/>
+  </filter>
+  <radialGradient id="vignette" cx="50%" cy="45%" r="75%">
+    <stop offset="55%" stop-color="#f3ebdd" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#ece0c9"/>
+  </radialGradient>
+  <clipPath id="frame"><rect width="1200" height="96" rx="12"/></clipPath>
+</defs>
+<g clip-path="url(#frame)">
+  <rect width="1200" height="96" fill="#f3ebdd"/>
+  <rect width="1200" height="96" filter="url(#fibers)" opacity=".45"/>
+  <rect width="1200" height="96" fill="url(#vignette)"/>
+  <text x="44" y="66" font-family="'Yu Mincho', 'Hiragino Mincho ProN', 'Noto Serif JP', 'Noto Serif CJK JP', 'MS Mincho', serif" font-size="46" font-weight="700" fill="#8f3b34" filter="url(#roughS)">連絡</text>
+  <line x1="154" y1="30" x2="154" y2="68" stroke="#1b1815" stroke-opacity=".3" stroke-width="1.4"/>
+  <text x="176" y="59" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="700" letter-spacing="8" fill="#1b1815">CONTATO</text>
+  <g opacity="0.85" filter="url(#brushF)"><path d="M392.7,51.2 C422.3,46 555.3,45 747.6,45.8 C939.8,46.5 1072.9,47.3 1132,50 C1058.1,51.4 925,53.2 732.8,53.8 C570.1,54.4 429.6,55 392.7,51.2 Z" fill="#d9a441"/><path d="M910.2,48.2 L1146.8,48.8" stroke="#d9a441" stroke-width="1" stroke-linecap="round" opacity=".55"/><path d="M939.8,50.4 L1132,50.1" stroke="#d9a441" stroke-width="1" stroke-linecap="round" opacity=".55"/><path d="M969.3,52.2 L1117.2,51.2" stroke="#d9a441" stroke-width="1" stroke-linecap="round" opacity=".55"/></g>
+  <circle cx="1152" cy="50" r="4.5" fill="#8f3b34"/>
+  <rect width="1200" height="96" filter="url(#grain)" opacity=".55"/>
+</g>
+</svg>
