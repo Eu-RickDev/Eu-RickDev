@@ -34,6 +34,14 @@ $states = [
     'sem-atividade' => $with('online', []),
     'offline' => $with('offline', []),
     'api-fora' => null,
+    'trocando-musica' => $with('online', [
+        ['type' => 0, 'name' => 'Youtube Music▶️', 'application_id' => '1549518283747885188', 'details' => 'Buscando uma música', 'timestamps' => ['start' => $now - 49 * 60000]],
+        $game('SERTÃO ROLEPLAY - SEASON 1', 7),
+    ]),
+    'virada' => $with('online', [
+        ['type' => 0, 'name' => 'SERTÃO ROLEPLAY - SEASON 1', 'timestamps' => ['start' => $now - 3595 * 1000]],
+        $music('Stay Tonight', 'KASINO', 212, 215),
+    ]),
     'nomes-longos' => $with('online', [
         $game('Grand Theft Auto V Premium Online Edition Remastered', 135),
         $music('An Extremely Long Song Title That Keeps Going (feat. Somebody) [Remastered]', 'Artist One, Artist Two & The Orchestra', 30, 4000),

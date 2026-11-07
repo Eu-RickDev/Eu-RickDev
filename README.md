@@ -10,6 +10,10 @@
   <img src="https://readme-typing-svg.demolab.com?font=Shippori+Mincho&weight=600&size=22&duration=2800&pause=900&color=B8842C&center=true&vCenter=true&width=760&lines=Scripts+FiveM+%2F+QBCore+para+o+Sert%C3%A3o+Roleplay;NUI+com+identidade+pr%C3%B3pria%2C+n%C3%A3o+template;Apps+desktop+em+Tauri+e+Electron;Jogos+no+Roblox+pela+Outage+Games" alt="Scripts FiveM / QBCore, NUI com identidade própria, apps desktop e jogos no Roblox pela Outage Games">
 </div>
 
+<p align="center">
+  <a href="https://discord.com/users/904957329718542387"><img src="https://rickdev.space/discord/card.php" width="500" alt="Status ao vivo no Discord"></a>
+</p>
+
 <img src="./assets/h-sobre.svg" width="100%" alt="道 Sobre">
 
 Fala! Aqui é o **RickDev**. Programo principalmente para **FiveM / QBCore**: scripts, sistemas e NUI, atualmente para o servidor **Sertão Roleplay**. Fora do GTA, faço apps desktop (geralmente para resolver problemas próprios), dois jogos no Roblox e estou começando a aprender um pouco de Blender.
@@ -57,10 +61,6 @@ Fala! Aqui é o **RickDev**. Programo principalmente para **FiveM / QBCore**: sc
 -->
 
 <img src="./assets/h-contato.svg" width="100%" alt="連絡 Contato">
-
-<p align="center">
-  <a href="https://discord.com/users/904957329718542387"><img src="https://rickdev.space/discord/card.php" width="420" alt="Status ao vivo no Discord"></a>
-</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Discord-rickdev__-4a423a?style=for-the-badge&logo=discord&logoColor=d9a441&labelColor=1b1815" alt="Discord: rickdev_">

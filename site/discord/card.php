@@ -1,11 +1,13 @@
 <?php
 
-const CARD_VERSION = '1.0.0';
+const CARD_VERSION = '1.1.0';
 
 const DISCORD_ID = '904957329718542387';
 const CARD_NAME = 'RickDev';
 const PHRASE = ['明鏡止水', '行雲流水'];
 const CODE_APPS = '/visual studio code|^code$|vs ?code|vscodium|cursor/i';
+const MUSIC_APPS = '/youtube music|spotify|deezer|apple music|soundcloud|tidal|amazon music/i';
+const MUSIC_APP_IDS = ['1549518283747885188'];
 
 const PRESENCE_TTL = 10;
 const PRESENCE_STALE = 600;
@@ -14,6 +16,7 @@ const IMAGE_TTL = 86400;
 const IMAGE_FAIL_TTL = 300;
 const IMAGE_SIZE = 128;
 const TICK_MAX = 1200;
+const GAME_TICK_MAX = 180;
 const USER_AGENT = 'rickdev.space status card';
 
 const C = [
@@ -21,7 +24,7 @@ const C = [
     'gold' => '#d9a441', 'goldDeep' => '#b8842c', 'seal' => '#8f3b34', 'sakura' => '#c98a8a',
 ];
 const STATUS = [
-    'online' => ['ONLINE', '#d9a441'],
+    'online' => ['ONLINE', '#23a55a'],
     'idle' => ['AUSENTE', '#c98a8a'],
     'dnd' => ['NÃO PERTURBE', '#8f3b34'],
     'offline' => ['OFFLINE', '#4a423a'],
@@ -32,7 +35,9 @@ const SERIF = "Georgia, 'Times New Roman', serif";
 const SANS = "'Segoe UI', 'Helvetica Neue', Arial, sans-serif";
 const JP = "'Yu Mincho', 'Hiragino Mincho ProN', 'Noto Serif JP', 'Noto Serif CJK JP', 'MS Mincho', serif";
 
-const W = 420;
+const W = 500;
+const TEXT_MAX = W - 170;
+const TICK_CSS = '@keyframes tick{from,to{opacity:1}}.k{opacity:0;animation:tick 1s linear}';
 
 function cache_path(string $key): string
 {
@@ -320,6 +325,10 @@ function card_model(?array $p): array
             continue;
         }
 
+        if (preg_match(MUSIC_APPS, $name) === 1 || in_array(str_of($a['application_id'] ?? ''), MUSIC_APP_IDS, true)) {
+            continue;
+        }
+
         if (isset(LABELS[$type]) && !$m['activity'] && $name !== '') {
             $coding = $type === 0 && preg_match(CODE_APPS, $name) === 1;
             $order = $coding ? ['small_image', 'large_image'] : ['large_image', 'small_image'];
@@ -402,6 +411,16 @@ function fit(string $s, float $max, float $size, bool $serif = false, float $spa
     return rtrim(implode('', $list)) . '…';
 }
 
+function fit_title(string $s, float $max): array
+{
+    foreach ([20, 18, 16] as $size) {
+        if (text_width($s, $size, true) <= $max) {
+            return [$s, $size];
+        }
+    }
+    return [fit($s, $max, 16, true), 16];
+}
+
 function wrap_lines(string $s, float $max, float $size, bool $serif, int $lines): array
 {
     $out = [];
@@ -434,12 +453,8 @@ function clock(float $sec): string
     return $h > 0 ? sprintf('%d:%02d:%02d', $h, $m, $s) : sprintf('%d:%02d', $m, $s);
 }
 
-function since_text($since, int $nowMs): string
+function minutes_text(int $min): string
 {
-    if (!is_numeric($since) || $since <= 0) {
-        return '';
-    }
-    $min = (int) floor(($nowMs - (float) $since) / 60000);
     if ($min < 1) {
         return 'agora mesmo';
     }
@@ -497,34 +512,68 @@ function label_text(float $x, float $y, string $text, string $anchor = 'start'):
         . ' font-family="' . SANS . '" font-weight="700" font-size="11" letter-spacing="3" fill="' . C['inkSoft'] . '">' . esc($text) . '</text>';
 }
 
+function ticker(float $x, float $y, string $attrs, array $frames): string
+{
+    $svg = '<g ' . $attrs . '>';
+    $last = count($frames) - 1;
+    foreach ($frames as $i => [$text, $delay, $len]) {
+        $style = 'animation-delay:' . num($delay) . 's;animation-duration:' . num(max(0.01, $len)) . 's'
+            . ($i === $last ? ';animation-fill-mode:forwards' : '');
+        $svg .= '<text class="k' . ($i === 0 ? ' k0' : '') . '" x="' . num($x) . '" y="' . num($y) . '" style="' . $style . '">' . esc($text) . '</text>';
+    }
+    return $svg . '</g>';
+}
+
+function since_frames($since, int $nowMs): array
+{
+    if (!is_numeric($since) || $since <= 0) {
+        return [];
+    }
+    $el = max(0, ($nowMs - (float) $since) / 1000);
+    $first = (int) floor($el / 60);
+    $frames = [];
+    for ($m = $first; $m <= $first + GAME_TICK_MAX; $m++) {
+        $frames[] = [
+            minutes_text($m),
+            $m === $first ? 0 : $m * 60 - $el,
+            $m === $first ? ($first + 1) * 60 - $el : 60,
+        ];
+    }
+    return $frames;
+}
+
 function activity_block(array $a, float $s, int $nowMs, ?string $icon): array
 {
-    $name = fit($a['name'], 250, 20, true);
-    $sub = since_text($a['since'], $nowMs);
+    [$name, $size] = fit_title($a['name'], TEXT_MAX);
+    $frames = since_frames($a['since'], $nowMs);
+    $subW = 0.0;
+    foreach ($frames as [$text]) {
+        $subW = max($subW, text_width($text, 12));
+    }
     [$x0, $tx] = side_layout(52, [
         text_width($a['label'], 11, false, 3),
-        text_width($name, 20, true),
-        text_width($sub, 12),
+        text_width($name, $size, true),
+        $subW,
     ]);
     $svg = tile($x0, $s + 10, 52, $icon, $a['coding'] ? '工' : '遊', 8)
         . label_text($tx, $s + 24, $a['label'])
-        . '<text x="' . num($tx) . '" y="' . num($s + 47) . '" font-family="' . SERIF . '" font-weight="700" font-size="20" fill="' . C['ink'] . '">' . esc($name) . '</text>'
-        . ($sub !== '' ? '<text x="' . num($tx) . '" y="' . num($s + 65) . '" font-family="' . SANS . '" font-size="12" fill="' . C['inkSoft'] . '">' . esc($sub) . '</text>' : '');
-    return [$svg, 84];
+        . '<text x="' . num($tx) . '" y="' . num($s + 47) . '" font-family="' . SERIF . '" font-weight="700" font-size="' . $size . '" fill="' . C['ink'] . '">' . esc($name) . '</text>'
+        . ($frames ? ticker($tx, $s + 65, 'font-family="' . SANS . '" font-size="12" fill="' . C['inkSoft'] . '"', $frames) : '');
+    return [$svg, 84, $frames ? TICK_CSS : ''];
 }
 
 function music_block(array $mu, float $s, int $nowMs, ?string $cover): array
 {
-    $title = fit($mu['title'], 250, 20, true);
-    $artist = fit($mu['artist'], 250, 13);
+    [$title, $size] = fit_title($mu['title'], TEXT_MAX);
+    $artist = fit($mu['artist'], TEXT_MAX, 13);
     [$x0, $tx] = side_layout(54, [
         text_width('OUVINDO', 11, false, 3),
-        text_width($title, 20, true),
+        text_width($title, $size, true),
         text_width($artist, 13),
     ]);
     $svg = tile($x0, $s + 10, 54, $cover, '音', 6)
         . label_text($tx, $s + 25, 'OUVINDO')
-        . '<text x="' . num($tx) . '" y="' . num($s + 48) . '" font-family="' . SERIF . '" font-weight="700" font-size="20" fill="' . C['ink'] . '">' . esc($title) . '</text>'
+        . '<text x="' . num($tx) . '" y="' . num($s + 48) . '" font-family="' . SERIF . '" font-weight="700" font-size="' . $size . '" fill="' . C['ink'] . '">' . esc($title) . '</text>'
         . ($artist !== '' ? '<text x="' . num($tx) . '" y="' . num($s + 66) . '" font-family="' . SANS . '" font-size="13" fill="' . C['inkSoft'] . '">' . esc($artist) . '</text>' : '');
 
     $start = is_numeric($mu['start']) ? (float) $mu['start'] : 0;
@@ -538,8 +587,8 @@ function music_block(array $mu, float $s, int $nowMs, ?string $cover): array
     $left = $dur - $el;
     $p = $dur > 0 ? $el / $dur : 1;
     $bx = 90;
-    $bw = 240;
-    $css = '';
+    $bw = W - 180;
+    $css = '@keyframes fade{to{opacity:.35}}.song{animation:fade 1.5s ease ' . num(max(0, $left)) . 's forwards}';
 
     $svg .= '<rect x="' . $bx . '" y="' . num($s + 84) . '" width="' . $bw . '" height="5" rx="2.5" fill="' . C['ink'] . '" opacity=".14"/>'
         . '<rect class="bar" x="' . $bx . '" y="' . num($s + 83) . '" width="' . $bw . '" height="7" rx="3.5" fill="' . C['gold'] . '" filter="url(#barF)" style="transform:scaleX(' . num($p) . ')"/>';
@@ -551,34 +600,29 @@ function music_block(array $mu, float $s, int $nowMs, ?string $cover): array
             . '.bar{transform-box:fill-box;transform-origin:0 50%;animation:bar ' . num($left) . 's linear both}';
     }
     if ($left > 0.5 && $left <= TICK_MAX) {
-        $css .= '@keyframes tick{from,to{opacity:1}}.k{opacity:0;animation:tick 1s linear}';
+        $css .= TICK_CSS;
         $first = (int) floor($el);
-        $last = (int) floor($dur);
-        $svg .= '<g ' . $timeAttrs . '>';
-        for ($v = $first; $v <= $last; $v++) {
-            $delay = $v === $first ? 0 : $v - $el;
-            $len = $v === $first ? $first + 1 - $el : 1;
-            $style = 'animation-delay:' . num($delay) . 's;animation-duration:' . num(max(0.01, $len)) . 's'
-                . ($v === $last ? ';animation-fill-mode:forwards' : '');
-            $svg .= '<text class="k' . ($v === $first ? ' k0' : '') . '" x="' . $bx . '" y="' . $ty . '" style="' . $style . '">' . clock($v) . '</text>';
+        $frames = [];
+        for ($v = $first; $v <= (int) floor($dur); $v++) {
+            $frames[] = [clock($v), $v === $first ? 0 : $v - $el, $v === $first ? $first + 1 - $el : 1];
         }
-        $svg .= '</g>';
+        $svg .= ticker($bx, $s + 106, $timeAttrs, $frames);
     } else {
         $svg .= '<text x="' . $bx . '" y="' . $ty . '" ' . $timeAttrs . '>' . clock($el) . '</text>';
     }
     $svg .= '<text x="' . ($bx + $bw) . '" y="' . $ty . '" text-anchor="end" ' . $timeAttrs . '>' . clock($dur) . '</text>';
 
-    return [$svg, 120, $css];
+    return ['<g class="song">' . $svg . '</g>', 120, $css];
 }
 
 function custom_block(array $c, float $s): array
 {
     $text = trim(($c['emoji'] !== '' ? $c['emoji'] . ' ' : '') . $c['text']);
-    $lines = wrap_lines($text, 330, 18, true, 2);
+    $lines = wrap_lines($text, W - 90, 18, true, 2);
     $svg = '';
     $y = count($lines) > 1 ? $s + 38 : $s + 44;
     foreach ($lines as $i => $line) {
-        $svg .= '<text x="210" y="' . num($y + $i * 25) . '" text-anchor="middle" font-family="' . SERIF
+        $svg .= '<text x="' . num(W / 2) . '" y="' . num($y + $i * 25) . '" text-anchor="middle" font-family="' . SERIF
             . '" font-style="italic" font-size="18" fill="' . C['inkSoft'] . '">' . esc($line) . '</text>';
     }
     return [$svg, count($lines) > 1 ? 80 : 66];
@@ -586,7 +630,7 @@ function custom_block(array $c, float $s): array
 
 function phrase_block(float $s): array
 {
-    $svg = '<text x="212.5" y="' . num($s + 46) . '" text-anchor="middle" font-family="' . JP . '" font-weight="700" font-size="30" letter-spacing="5" fill="'
+    $svg = '<text x="' . num(W / 2 + 2.5) . '" y="' . num($s + 46) . '" text-anchor="middle" font-family="' . JP . '" font-weight="700" font-size="30" letter-spacing="5" fill="'
         . C['ink'] . '" filter="url(#roughT)">' . esc(PHRASE[0]) . '<tspan fill="' . C['seal'] . '">・</tspan>' . esc(PHRASE[1]) . '</text>';
     return [$svg, 66];
 }
@@ -615,7 +659,7 @@ function header_block(array $m, ?string $avatar): string
         . '<text x="' . num($tx) . '" y="64" font-family="' . SERIF . '" font-weight="700" font-size="26" fill="' . C['ink'] . '">' . esc(CARD_NAME) . '</text>'
         . '<circle cx="' . num($tx + 4) . '" cy="82" r="4" fill="' . $color . '"/>'
         . label_text($tx + 14, 86, $label)
-        . brush(50, 120, 320, 10, C['gold'], 0.85);
+        . brush(W * 0.12, 120, W * 0.76, 10, C['gold'], 0.85);
 }
 
 function card_label(array $m): string
@@ -644,14 +688,15 @@ function render_card(array $m, int $nowMs, callable $resolve): string
     $kanji = '静';
 
     if ($m['activity']) {
-        [$svg, $h] = activity_block($m['activity'], $y, $nowMs, $resolve($m['activity']['icon'], $m['activity']['app'], IMAGE_TTL));
+        [$svg, $h, $c] = activity_block($m['activity'], $y, $nowMs, $resolve($m['activity']['icon'], $m['activity']['app'], IMAGE_TTL));
         $body .= $svg;
+        $css .= $c;
         $y += $h;
         $kanji = $m['activity']['coding'] ? '工' : '遊';
     }
     if ($m['music']) {
         if ($m['activity']) {
-            $body .= '<line x1="120" y1="' . num($y) . '" x2="300" y2="' . num($y) . '" stroke="' . C['ink'] . '" stroke-opacity=".12"/>';
+            $body .= '<line x1="' . num(W / 2 - 90) . '" y1="' . num($y) . '" x2="' . num(W / 2 + 90) . '" y2="' . num($y) . '" stroke="' . C['ink'] . '" stroke-opacity=".12"/>';
             $y += 2;
         }
         [$svg, $h, $c] = music_block($m['music'], $y, $nowMs, $resolve($m['music']['cover'], $m['music']['app'], IMAGE_TTL));
@@ -670,8 +715,11 @@ function render_card(array $m, int $nowMs, callable $resolve): string
 
     $H = (int) ceil($y + 14);
     $ks = max(140, min(190, $H * 0.6));
-    $back = '<text x="210" y="' . num($H - 12 - $ks * 0.08) . '" text-anchor="middle" font-family="' . JP . '" font-size="' . num($ks)
+    $back = '<text x="' . num(W / 2) . '" y="' . num($H - 12 - $ks * 0.08) . '" text-anchor="middle" font-family="' . JP . '" font-size="' . num($ks)
         . '" fill="' . C['ink'] . '" opacity=".045">' . $kanji . '</text>';
+    if (substr_count($css, TICK_CSS) > 1) {
+        $css = str_replace(TICK_CSS, '', $css) . TICK_CSS;
+    }
     $css .= '@media (prefers-reduced-motion:reduce){.bar,.k{animation:none}.k0{opacity:1}}';
     $label = esc(card_label($m));
 
