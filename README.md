@@ -1,9 +1,3 @@
-<!--
-  README do perfil — estilo sumi-e (papel, nanquim, ouro e carimbo).
-  SVGs de ./assets:  node tools/build-assets.mjs
-  Prévia local:      node tools/preview.mjs  (depois abra preview.html)
--->
-
 <div align="center">
   <img src="./assets/banner.svg" width="100%" alt="RickDev: duas katanas se separam e revelam o nome">
   <br>
@@ -51,14 +45,6 @@ Fala! Aqui é o **RickDev**. Programo principalmente para **FiveM / QBCore**: sc
 - 🎣 Fish N' Chips: mecânicas prontas, agora indo para arte e som
 - 📖 Grimoire.pro: leitura da partida ao vivo e análise pós-partida
 
-<!--
-  Quando tiver mais repos públicos, descomente os stats (já nas cores da marca):
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Eu-RickDev&show_icons=true&hide_border=true&bg_color=f3ebdd&title_color=8f3b34&text_color=1b1815&icon_color=b8842c" height="165" alt="Stats do GitHub">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Eu-RickDev&layout=compact&hide_border=true&bg_color=f3ebdd&title_color=8f3b34&text_color=1b1815" height="165" alt="Linguagens mais usadas">
-</p>
--->
 
 <img src="./assets/h-contato.svg" width="100%" alt="連絡 Contato">
 
