@@ -48,17 +48,6 @@ Fala! Aqui é o **RickDev**. Programo principalmente para **FiveM / QBCore**: sc
 - 📖 Grimoire.pro: leitura da partida ao vivo e análise pós-partida
 
 <!--
-  Status ao vivo do Discord (Lanyard). Para ligar:
-  1) entre no servidor do Lanyard: https://discord.gg/lanyard
-  2) troque SEU_ID_DISCORD pelo seu ID (Discord > Configurações > Avançado > Modo desenvolvedor > clique direito no perfil > Copiar ID)
-  3) apague estas linhas de comentário
-
-<p align="center">
-  <a href="https://discord.com/users/SEU_ID_DISCORD"><img src="https://lanyard.cnrad.dev/api/SEU_ID_DISCORD?theme=light&bg=f3ebdd&borderRadius=12px&animated=true&idleMessage=Provavelmente%20no%20Sert%C3%A3o%20RP" width="100%" alt="Status no Discord"></a>
-</p>
--->
-
-<!--
   Quando tiver mais repos públicos, descomente os stats (já nas cores da marca):
 
 <p align="center">
@@ -68,6 +57,10 @@ Fala! Aqui é o **RickDev**. Programo principalmente para **FiveM / QBCore**: sc
 -->
 
 <img src="./assets/h-contato.svg" width="100%" alt="連絡 Contato">
+
+<p align="center">
+  <a href="https://discord.com/users/904957329718542387"><img src="https://rickdev.space/discord/card.php" width="420" alt="Status ao vivo no Discord"></a>
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Discord-rickdev__-4a423a?style=for-the-badge&logo=discord&logoColor=d9a441&labelColor=1b1815" alt="Discord: rickdev_">
